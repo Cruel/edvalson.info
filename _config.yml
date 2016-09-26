@@ -1,6 +1,6 @@
 name: Edvalson Mutex
 description: Blog of yet another developer who is desperate to prove his competence.
-keywords: blog, tech, programming, computers
+keywords: blog, programming
 url: https://edvalson.info
 enforce_ssl: edvalson.info
 author: Thomas Edvalson
@@ -20,7 +20,8 @@ share-links-active:
 markdown: kramdown
 kramdown:
   input: GFM
-highlighter: pygments
+  syntax_highlighter: rouge
+highlighter: rouge
 permalink: pretty
 
 paginate: 10
