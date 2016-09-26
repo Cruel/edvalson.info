@@ -1,0 +1,7 @@
+{
+  "name": "individualistwill",
+  "dependencies": {
+    "foundation": "zurb/bower-foundation",
+    "foundation-icon-fonts": "zurb/foundation-icon-fonts"
+  }
+}

@@ -1,0 +1,20 @@
+---
+layout: default_banner
+---
+
+{% include pagination.html %}
+
+{% for post in paginator.posts %}
+<article class="post">
+    <h2><a href="{{ post.url }}">{{ post.title }}</a> <small class="date">{{ post.date | date: "%B %e, %Y" }}</small></h2>
+    <div class="entry">
+    	{% if post.description %}
+			{{ post.description }}
+    	{% else %}
+        	{{ post.content | strip_html | truncatewords:60}} <a href="{{ post.url }}" class="read-more">Read More &raquo;</a>
+    	{% endif %}
+    </div>
+</article>
+{% endfor %}
+
+{% include pagination.html %}

@@ -1,0 +1,41 @@
+name: Edvalson Mutex
+description: Blog of yet another developer who is desperate to prove his competence.
+keywords: blog, tech, programming, computers
+url: https://edvalson.info
+enforce_ssl: edvalson.info
+author: Thomas Edvalson
+avatar: https://avatars2.githubusercontent.com/u/383999
+
+# Your disqus shortname, entering this will enable commenting on posts
+disqus: edvalson
+# Enter your Google Analytics web tracking code
+google_analytics: UA-84643730-1
+
+share-links-active:
+  twitter: true
+  facebook: true
+  google: true
+  linkedin: true
+
+markdown: kramdown
+kramdown:
+  input: GFM
+highlighter: pygments
+permalink: pretty
+
+paginate: 10
+paginate_path: "/page/:num/"
+
+gems:
+- jekyll-paginate
+
+exclude:
+- Gruntfile.js
+- package.json
+- bower.json
+- config.rb
+- node_modules
+- bower_components
+- README.md
+- LICENSE
+- CNAME

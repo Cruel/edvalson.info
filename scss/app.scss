@@ -1,0 +1,110 @@
+@import "compass";
+
+// Has all Foundation overrides
+@import "settings";
+
+// @import "foundation";
+// Or selectively include components
+@import
+//   "foundation/components/accordion",
+//   "foundation/components/alert-boxes",
+  "foundation/components/block-grid",
+//   "foundation/components/breadcrumbs",
+//   "foundation/components/button-groups",
+  "foundation/components/buttons",
+  "foundation/components/clearing",
+  "foundation/components/dropdown",
+  "foundation/components/dropdown-buttons",
+//   "foundation/components/flex-video",
+  "foundation/components/forms",
+  "foundation/components/grid",
+  "foundation/components/inline-lists",
+//   "foundation/components/joyride",
+//   "foundation/components/keystrokes",
+  "foundation/components/labels",
+//   "foundation/components/magellan",
+//   "foundation/components/orbit",
+//   "foundation/components/pagination",
+//   "foundation/components/panels",
+//   "foundation/components/pricing-tables",
+//   "foundation/components/progress-bars",
+//   "foundation/components/reveal",
+//  "foundation/components/side-nav",
+//   "foundation/components/split-buttons",
+  "foundation/components/sub-nav",
+//   "foundation/components/switch",
+  "foundation/components/tables",
+//   "foundation/components/tabs",
+//   "foundation/components/thumbs",
+//   "foundation/components/tooltips",
+  "foundation/components/top-bar",
+  "foundation/components/type",
+//   "foundation/components/offcanvas",
+  "foundation/components/visibility";
+
+@import "foundation-icons";
+
+#header {
+  background-color: #BBFFBB;
+}
+#header h1 {
+  color: #224422;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+}
+
+.post {
+  margin-bottom: 1.25rem;
+}
+.post-meta {
+  color: #666;
+}
+.post-meta .tags {
+  display: inline-block;
+}
+.smword {
+  font-size: 80%;
+  color: #a0a0a0;
+}
+.image-caption {
+  display: block;
+  font-size: 80%;
+  padding-top: 6px;
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+.postfooter {
+  font-style: italic;
+}
+
+
+#footer {
+    // background-color: #ccc;
+  padding-top: 5px;
+}
+#footer .icon-bar {
+    font-size: 40px;
+}
+#footer .icon-bar .item {
+    outline: 0;
+}
+.copyright {
+  font-size: 10px;
+}
+
+code {
+  display: block;
+  overflow: auto;
+}
+
+.row {
+    padding: 0 5px;
+}
+
+@import "syntax";
+//@import "monokai";
+
+// http://compass-style.org/reference/compass/layout/sticky_footer/
+@import "compass/layout/sticky-footer";
+@include sticky-footer(75px, "#layout", "#layout_footer", "#footer");
