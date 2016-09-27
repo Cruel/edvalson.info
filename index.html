@@ -6,6 +6,7 @@ layout: default_banner
 
 {% for post in paginator.posts %}
 <article class="post">
+    <img class="post-thumb" src="{{ post.image }}" />
     <h2><a href="{{ post.url }}">{{ post.title }}</a> <small class="date">{{ post.date | date: "%B %e, %Y" }}</small></h2>
     <div class="entry">
     	{% if post.description %}

@@ -17,12 +17,10 @@ share-links-active:
   google: true
   linkedin: true
 
+encoding: utf-8
 markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
 highlighter: rouge
-permalink: pretty
+permalink: /:title/
 
 paginate: 10
 paginate_path: "/page/:num/"

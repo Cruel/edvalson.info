@@ -1,8 +1,7 @@
 ---
 title: Using Gearman in CakePHP
 author: Thomas Edvalson
-image: /assets/imgs/knocking-on-door.jpg
-permalink: /using-gearman-in-cakephp/
+image: /assets/imgs/post_thumbs/gearman-cakephp.png
 layout: post
 description: Test description.
 keywords: php, cakephp, gearman
@@ -18,7 +17,7 @@ I will illustrate a problem that existed in LyricJam, a lyric website, while I w
 
 The LyricJam homepage consists of *Hot Artists* and *Top Tracks* and other such data. This data is fetched with multiple API calls and lots of SQL work. While the code could have probably been optimized better, there was no getting around it, the code was going to take a long time to execute. But that’s why we have this magical thing called *caching* so it only has to be done once! Ah ha! Problem solved!
 
-```php
+```php?start_inline=true
 $songs = Cache::read('hot_songs', 'hourly');
 if ($songs !== false) // If cache isn't expired
     return $songs;
@@ -26,7 +25,6 @@ $songs = lengthy_operation_func(); // Takes a while to load (30 seconds!)
 Cache::write('hot_songs', $songs, 'hourly');
 return $songs;
 ```
-{: .code-block}
 
 But wait. When the cache expires and it’s time to do work again, then page will still take a long time to load. As a matter of fact, LyricJam homepage took around 30 seconds to load for whomever was the first person of every hour to visit the site (the cache expired hourly). This clearly wasn’t desirable. What we needed was to do the caching work in the background as to not interrupt the website flow, yet the website flow still needed to trigger the caching. **Gearman to the rescue!**
 
@@ -51,7 +49,7 @@ The **Gearman Worker** runs in the background. So for the purpose of the flowcha
 
 Time to update our previous example code to use Gearman with this secondary cache:
 
-```php
+```php?start_inline=true
 function bg_func(){
     $songs = lengthy_operation_func(); // The 30-second operation
     Cache::write('hot_songs', $songs, 'hourly');
@@ -65,23 +63,22 @@ gearman_run('bg_func'); // Run bg_func() in background using Gearman
 $songs = Cache::read('hot_songs', 'permanent');
 return $songs;
 ```
-{: .code-block}
 
 This is oversimplified *semi-pseudo*-cakephp code, if that wasn’t clear. Actual code is in next section.
 
-Using this method, we don’t have to worry about the Primary Cache being expired and returning nothing because the Secondary Cache will be there to fetch that which was expired. This way the client receives outdated information while the information is updated by the Gearman Worker. Outdated information is almost always better than a slow website.
+Using this method, we don’t have to worry about the Primary Cache being expired and returning nothing because the Secondary Cache will be there to fetch that which was expired. This way the client receives outdated information while the information is updated by the Gearman Worker. Outdated information is *almost always* better than a slow website.
 
 The function call `gearman_run('bg_func');` is executed immediately without actually waiting for `bg_func()` to finish, queuing up the lengthy task to be executed later by Gearman.
 
 ## The Solution (actual code)
 
-The above is nice and all, but How do I use Gearman in the CakePHP framework?!
+The above is nice and all, but **How do I use Gearman in the CakePHP framework?!**
 
-Well, if you search for CakePHP and Gearman in the same phrase, you’re likely to to be led to this CakePHP plugin. This is more than enough and saves us the work of some boilerplate coding, so everyone say thanks to the author José Lorenzo Rodríguez. I won’t explain how to install a CakePHP plugin, that’s best done elsewhere, though I would suggest taking advantage of the fact that the git repo is compatible with Composer.
+Well, if you search for CakePHP and Gearman in the same phrase, you’re likely to to be led to [this CakePHP plugin](https://github.com/lorenzo/cakephp-gearman). This is more than enough and saves us the work of some boilerplate coding, so everyone say thanks to the author *José Lorenzo Rodríguez*. I won’t explain how to install a CakePHP plugin, that’s best done elsewhere, though I would suggest taking advantage of the fact that the git repo is compatible with [Composer](http://getcomposer.org/).
 
-Now, assuming the cakephp-gearman plugin is now installed, we can get started. And I will assume that you have gone ahead and read about the basics of Gearman and how it works. Basically, there’s the Gearman Job Server daemon (gearmand) that is independent from our code. And our code will be using Gearman’s PECL extension to create a Gearman Worker process (also running as a daemon). It is only after these two processes are running that we can run the above pseudo-code snippet and start running our code in the background via Gearman.
+Now, assuming the *cakephp-gearman* plugin is now installed, we can get started. And I will assume that you have gone ahead and read about the basics of Gearman and how it works. Basically, there’s the *Gearman Job Server* daemon (gearmand) that is independent from our code. And our code will be using [Gearman’s PECL extension](http://php.net/manual/en/book.gearman.php) to create a *Gearman Worker* process (also running as a daemon). It is only after these two processes are running that we can run the above pseudo-code snippet and start running our code in the background via Gearman.
 
-```php
+```php?start_inline=true
 public function getHot($limit = 50, $cached = true) {
     if ($cached) {
         $songs = Cache::read('hot_songs_'.$limit, 'hourly');
@@ -103,11 +100,10 @@ public function getHot($limit = 50, $cached = true) {
     return $songs;
 }
 ```
-{: .code-block}
 
-Our Gearman Worker process needs to interface with our CakePHP application, so we will make a console task in [app]/Console/Command/Task/SongShell.php.
+Our Gearman Worker process needs to interface with our CakePHP application, so we will make a console task in *[app]/Console/Command/Task/SongShell.php*.
 
-```php
+```php?start_inline=true
 App::uses('GearmanQueue', 'Gearman.Client');
 
 class SongShell extends AppShell {
@@ -130,6 +126,5 @@ class SongShell extends AppShell {
     }
 }
 ```
-{: .code-block}
 
 Since it’s a long-term cache that won’t be accessed very often, it shouldn’t be used on any sort of RAM-based cache solution (like memcached) and instead should use a less-expensive method like file storage (in CakePHP, this will be FileEngine).
